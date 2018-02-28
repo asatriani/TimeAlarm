@@ -1,0 +1,24 @@
+logging:
+  level: ${DW_TA_LOGGING_LEVEL:-INFO}
+  loggers:
+    com.italtel.iot: DEBUG
+  appenders:
+    - type: console
+      timeZone: ${DW_TA_TIMEZONE:-UTC}
+      threshold: ${DW_TA_CONSOLE_LOG_LEVEL:-WARN}
+      target: stdout
+
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost/timeAlarm
+  user: root
+  password: iotadmin
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minutes
+  checkConnectionOnBorrow: true
