@@ -32,12 +32,18 @@ public abstract class TimeAlarmService {
     abstract TimeAlarmDao timeAlarmDao();
 
     public TimeAlarm getTimeAlarm(final String username) {
+        TimeAlarm timeAlarm;
         try {
-            return timeAlarmDao().getTimeAlarm(username);
+            timeAlarm = timeAlarmDao().getTimeAlarm(username);
         } catch (Throwable t) {
             log.error(String.format(ERROR_SINGLE_READING, username) + ": {}", t.getMessage());
             throw new InternalServerErrorException(String.format(ERROR_SINGLE_READING, username));
         }
+
+        if (timeAlarm == null) {
+            throw new NotFoundException(String.format(ERROR_NOT_FOUND, username));
+        }
+        return timeAlarm;
     }
 
     @Transaction
@@ -70,10 +76,6 @@ public abstract class TimeAlarmService {
 
     @Transaction
     public void deleteTimeAlarm(final String username) {
-        if (getTimeAlarm(username) == null) {
-            throw new NotFoundException(String.format(ERROR_NOT_FOUND, username));
-        }
-
         try {
             timeAlarmDao().deleteTimeAlarm(username);
         } catch (Throwable t) {

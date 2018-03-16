@@ -1,7 +1,6 @@
 package com.italtel.iot.services;
 
 import com.italtel.iot.api.User;
-import com.italtel.iot.api.User;
 import com.italtel.iot.db.dao.UserDao;
 import com.italtel.iot.utility.SQLExceptionUtility;
 import org.skife.jdbi.v2.sqlobject.CreateSqlObject;
@@ -29,12 +28,18 @@ public abstract class UserService {
     abstract UserDao userDao();
 
     public User getUser(final String username) {
+        User user;
         try {
-            return userDao().getUser(username);
+            user = userDao().getUser(username);
         } catch (Throwable t) {
             log.error(String.format(ERROR_SINGLE_READING, username) + ": {}", t.getMessage());
             throw new InternalServerErrorException(String.format(ERROR_SINGLE_READING, username));
         }
+
+        if (user == null) {
+            throw new NotFoundException(String.format(ERROR_NOT_FOUND, username));
+        }
+        return user;
     }
 
     @Transaction
@@ -67,10 +72,6 @@ public abstract class UserService {
 
     @Transaction
     public void deleteUser(final String username) {
-        if (getUser(username) == null) {
-            throw new NotFoundException(String.format(ERROR_NOT_FOUND, username));
-        }
-
         try {
             userDao().deleteUser(username);
         } catch (Throwable t) {

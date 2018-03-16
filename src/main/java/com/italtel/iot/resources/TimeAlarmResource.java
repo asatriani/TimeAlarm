@@ -45,14 +45,6 @@ public class TimeAlarmResource {
         return Response.ok(getTimeAlarm(user).toString()).build();
     }
 
-    @GET
-    @Timed
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/test")
-    public Response getTimeAlarmTest() {
-        return Response.ok("17:56").build();
-    }
-
     @POST
     @Timed
     @Consumes(MediaType.APPLICATION_JSON)

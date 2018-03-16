@@ -1,12 +1,13 @@
 logging:
   level: ${DW_TA_LOGGING_LEVEL:-INFO}
   loggers:
-    com.italtel.iot: DEBUG
-  appenders:
-    - type: console
-      timeZone: ${DW_TA_TIMEZONE:-UTC}
-      threshold: ${DW_TA_CONSOLE_LOG_LEVEL:-WARN}
-      target: stdout
+    "com.italtel.iot":
+      level: DEBUG
+      appenders:
+        - type: console
+          timeZone: ${DW_TA_TIMEZONE:-UTC}
+          threshold: ${DW_TA_CONSOLE_LOG_LEVEL:-WARN}
+          target: stdout
 
 database:
   driverClass: com.mysql.cj.jdbc.Driver

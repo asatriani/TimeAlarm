@@ -26,7 +26,7 @@ public interface TimeAlarmDao {
             "inner join users u on u.id = a.user_id and u.username = :username")
     void editTimeAlarm(@BindBean final TimeAlarm timeAlarm, @Bind("username") final String username);
 
-    @SqlUpdate("delete from alarms a " +
+    @SqlUpdate("delete a from alarms a " +
             "inner join users u on u.id = a.user_id and u.username = :username")
     int deleteTimeAlarm(@Bind("username") final String username);
 }
